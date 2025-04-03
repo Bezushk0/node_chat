@@ -37,12 +37,11 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('joinRoom', ({ userName, roomName }) => {
+  socket.on('joinRoom', ({ username, roomName }) => {
     socket.join(roomName);
 
     fs.readFile('src/server/db.json', (_err, data) => {
-      const rooms = JSON.parse(data);
-      const messages = rooms[roomName] || [];
+      const messages = JSON.parse(data)[roomName] || [];
 
       messages.forEach((msg) => socket.emit('message', msg));
     });
